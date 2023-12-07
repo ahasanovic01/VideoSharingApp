@@ -1,11 +1,16 @@
 const express = require('express');
-const multer = require('multer');
-const videoController = require('../controllers/videoController');
-const upload = multer({ dest: 'uploads/' }); // Adjust storage as needed
 const router = express.Router();
+const Video = require('../models/Video'); 
 
-router.get('/upload', videoController.getUploadPage);
-router.post('/upload', upload.single('videoFile'), videoController.uploadVideo);
-router.get('/dashboard', videoController.getDashboard);
+
+router.get('/dashboard', async (req, res) => {
+    try {
+        const videos = await Video.find({}); 
+        res.render('dashboard', { videos }); 
+    } catch (error) {
+        console.error('Error fetching videos:', error);
+        res.status(500).send('Error fetching videos');
+    }
+});
 
 module.exports = router;

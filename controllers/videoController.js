@@ -5,14 +5,17 @@ const videoController = {
         res.render('upload');
     },
 
-    uploadVideo(req, res) {
+    uploadVideo: async (req, res) => {
         try {
-            
             const { title } = req.body;
             const videoPath = req.file.path; 
 
-            const newVideo = new Video({ title, videoPath, user: req.session.userId });
-            newVideo.save();
+            const newVideo = new Video({
+                title, 
+                videoPath, 
+                user: req.session.userId  
+            });
+            await newVideo.save();
 
             res.redirect('/dashboard');
         } catch (error) {
@@ -20,14 +23,15 @@ const videoController = {
         }
     },
 
-    getDashboard(req, res) {
-        Video.find({ user: req.session.userId }, (err, videos) => {
-            if (err) {
-                return res.status(500).send("Error fetching videos");
-            }
+    getDashboard: async (req, res) => {
+        try {
+            const videos = await Video.find({ user: req.session.userId });
             res.render('dashboard', { videos });
-        });
-    }
+        } catch (error) {
+            res.status(500).send("Error fetching videos");
+        }
+    },
+
 };
 
 module.exports = videoController;
