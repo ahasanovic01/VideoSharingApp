@@ -1,9 +1,8 @@
 const ffmpeg = require('fluent-ffmpeg');
 
 /**
- * Get video duration.
- * @param {string} videoPath Path to the video file.
- * @returns {Promise<number>} A promise that resolves to the duration of the video in seconds.
+ * @param {string} videoPath 
+ * @returns {Promise<number>} 
  */
 exports.getVideoDuration = (videoPath) => {
     return new Promise((resolve, reject) => {
@@ -19,11 +18,10 @@ exports.getVideoDuration = (videoPath) => {
 };
 
 /**
- * Convert video to a different format.
- * @param {string} inputPath Path to the input video file.
- * @param {string} outputPath Path where the output video will be saved.
- * @param {string} format The desired output format (e.g., 'mp4').
- * @returns {Promise<void>} A promise that resolves when conversion is complete.
+ * @param {string} inputPath 
+ * @param {string} outputPath 
+ * @param {string} format 
+ * @returns {Promise<void>} 
  */
 exports.convertVideoFormat = (inputPath, outputPath, format) => {
     return new Promise((resolve, reject) => {

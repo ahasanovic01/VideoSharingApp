@@ -18,8 +18,6 @@ const authController = {
             res.status(500).send(error.message);
         }
     },
-
-    // Additional methods for registration, logout, etc.
 };
 
 module.exports = authController;

@@ -1,8 +1,7 @@
 const express = require('express');
-const User = require('../models/User');  // Assuming you have a User model
+const User = require('../models/User');  
 const router = express.Router();
 
-// Middleware to check if the user is logged in
 const isLoggedIn = (req, res, next) => {
     if (!req.session.userId) {
         return res.redirect('/login');
@@ -10,7 +9,6 @@ const isLoggedIn = (req, res, next) => {
     next();
 };
 
-// Display the user profile
 router.get('/profile', isLoggedIn, async (req, res) => {
     try {
         const user = await User.findById(req.session.userId);
@@ -20,10 +18,9 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     }
 });
 
-// Route to update user profile
 router.post('/profile', isLoggedIn, async (req, res) => {
     try {
-        const { username, bio } = req.body; // Assuming these are the fields in your user model
+        const { username, bio } = req.body; 
 
         await User.findByIdAndUpdate(req.session.userId, {
             username,
@@ -36,6 +33,5 @@ router.post('/profile', isLoggedIn, async (req, res) => {
     }
 });
 
-// Additional user routes can be added here
 
 module.exports = router;

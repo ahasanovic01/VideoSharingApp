@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../../models/User');
 
-// Assuming you have a function to connect to a test database
 const { connectToTestDb, closeTestDb } = require('../setupTestDb');
 
 beforeAll(async () => {
@@ -20,8 +19,6 @@ describe('User Model Test', () => {
 
         expect(savedUser._id).toBeDefined();
         expect(savedUser.email).toBe(userData.email);
-        // More assertions...
     });
 
-    // Other tests like validation failures, password hashing, etc.
 });

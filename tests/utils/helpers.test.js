@@ -6,7 +6,7 @@ describe('Password Hashing Utilities', () => {
     test('hashPassword should hash a password correctly', async () => {
         const hashedPassword = await hashPassword(plainPassword);
         expect(hashedPassword).not.toBe(plainPassword);
-        expect(hashedPassword).toHaveLength(60); // bcrypt usually generates a 60-char hash
+        expect(hashedPassword).toHaveLength(60); 
     });
 
     test('comparePassword should correctly compare a plain password to its hash', async () => {
