@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 Upload a Video
+  form(method='POST', action='/upload', enctype='multipart/form-data')
+    label(for='title') Video Title
+    input(type='text', name='title', required=true)
+
+    label(for='videoFile') Video File
+    input(type='file', name='videoFile', required=true)
+
+    input(type='submit', value='Upload Video')

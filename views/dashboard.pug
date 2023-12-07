@@ -1,16 +1,14 @@
 extends layout
 
 block content
-  h1 Dashboard
-  if videos && videos.length
-    h2 Your Videos
-    ul
-      each video in videos
-        li
-          a(href=`/video/${video._id}`) #{video.title}
-          // Add more video details as needed
+  h1 Your Dashboard
+  if videos.length
+    h2 Uploaded Videos
+    each video in videos
+      div
+        p= video.title
+        // Display video or link
+        a(href=`/videos/${video._id}`) View
   else
     p No videos uploaded yet.
-  
-  // Link to upload a new video
   a(href='/upload') Upload a New Video

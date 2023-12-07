@@ -1,23 +1,32 @@
 const Video = require('../models/Video');
 
 const videoController = {
-    async uploadVideo(req, res) {
+    getUploadPage(req, res) {
+        res.render('upload');
+    },
+
+    uploadVideo(req, res) {
         try {
-            const { title, url } = req.body;
-            await Video.create({ title, url, user: req.session.userId });
+            
+            const { title } = req.body;
+            const videoPath = req.file.path; 
+
+            const newVideo = new Video({ title, videoPath, user: req.session.userId });
+            newVideo.save();
+
             res.redirect('/dashboard');
         } catch (error) {
             res.status(500).send("Error uploading video");
         }
     },
 
-    async getDashboard(req, res) {
-        try {
-            const videos = await Video.find({ user: req.session.userId });
+    getDashboard(req, res) {
+        Video.find({ user: req.session.userId }, (err, videos) => {
+            if (err) {
+                return res.status(500).send("Error fetching videos");
+            }
             res.render('dashboard', { videos });
-        } catch (error) {
-            res.status(500).send("Error fetching videos");
-        }
+        });
     }
 };
 
