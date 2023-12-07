@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1 Dashboard
+  if videos.length
+    h2 Your Videos
+    ul
+      each video in videos
+        li
+          a(href=video.url) #{video.title}
+  else
+    p No videos uploaded yet.
+
+  h2 Upload a New Video
+  form(method='POST', action='/upload')
+    div
+      label(for='title') Video Title:
+      input(type='text', name='title', required=true)
+    div
+      label(for='url') Video URL:
+      input(type='url', name='url', required=true)
+    div
+      input(type='submit', value='Upload Video')

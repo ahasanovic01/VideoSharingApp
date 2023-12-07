@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+  head
+    title Video Sharing App
+    link(rel='stylesheet', href='/styles/main.css')
+  body
+    header
+      nav
+        ul
+          li
+            a(href='/') Home
+          if user
+            li
+              a(href='/dashboard') Dashboard
+            li
+              a(href='/logout') Logout
+          else
+            li
+              a(href='/register') Register
+            li
+              a(href='/login') Login
+    main
+      block content
