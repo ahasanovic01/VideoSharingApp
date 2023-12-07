@@ -7,17 +7,12 @@ html(lang="en")
     header
       nav
         ul
-          li
-            a(href='/') Home
+          li: a(href='/') Home
           if user
-            li
-              a(href='/dashboard') Dashboard
-            li
-              a(href='/logout') Logout
+            li: a(href='/dashboard') Dashboard
+            li: a(href='/logout') Logout
           else
-            li
-              a(href='/register') Register
-            li
-              a(href='/login') Login
+            li: a(href='/register') Register
+            li: a(href='/login') Login
     main
       block content

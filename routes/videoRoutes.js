@@ -1,31 +1,27 @@
 const express = require('express');
+const Video = require('../models/Video');  // Assuming you have a Video model
 const router = express.Router();
 
-// Dummy video database for demonstration
-let videos = [];
-
-router.get('/dashboard', (req, res) => {
-    // Check if user is logged in
-    if (!req.session.user) {
-        return res.redirect('/login');
+// Dashboard displaying videos
+router.get('/dashboard', async (req, res) => {
+    try {
+        const videos = await Video.find({});  // Retrieve all videos or per user basis
+        res.render('dashboard', { videos });
+    } catch (error) {
+        res.status(500).send(error.message);
     }
-
-    // Render the dashboard with available videos
-    res.render('dashboard', { videos });
 });
 
-router.post('/upload', (req, res) => {
-    // Basic upload logic
-    const { videoUrl, title } = req.body;
+// Route to handle video upload
+router.post('/upload', async (req, res) => {
+    try {
+        const { title, url } = req.body;  // Assuming you're receiving title and URL of the video
+        await Video.create({ title, url, user: req.session.userId });  // Assuming you store userId in session
 
-    if (!videoUrl || !title) {
-        return res.status(400).send('Video URL and title are required');
+        res.redirect('/dashboard');
+    } catch (error) {
+        res.status(500).send(error.message);
     }
-
-    const newVideo = { videoUrl, title };
-    videos.push(newVideo);
-
-    res.redirect('/dashboard');
 });
 
 module.exports = router;

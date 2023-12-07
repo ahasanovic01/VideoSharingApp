@@ -1,53 +1,39 @@
 const express = require('express');
+const User = require('../models/User');  // Assuming you have a User model
+const { hashPassword, comparePassword } = require('../utils/helpers');  // Password utilities
 const router = express.Router();
 
-// Dummy user database for demonstration
-let users = [];
+// Register a new user
+router.post('/register', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const hashedPassword = await hashPassword(password);
+        const user = await User.create({ email, password: hashedPassword });
 
-router.get('/register', (req, res) => {
-    res.render('register');
+        // Redirect or respond depending on your app flow
+        res.redirect('/login');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 });
 
-router.post('/register', (req, res) => {
-    const { email, password } = req.body;
+// User login
+router.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
 
-    // Basic validation and user creation logic
-    if (!email || !password) {
-        return res.status(400).send('Email and password are required');
+        if (user && await comparePassword(password, user.password)) {
+            // Set up session, cookie, or token here
+
+            // Redirect or respond based on your app flow
+            res.redirect('/dashboard');
+        } else {
+            res.status(400).send('Invalid credentials');
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
     }
-
-    const userExists = users.some(user => user.email === email);
-
-    if (userExists) {
-        return res.status(400).send('User already exists');
-    }
-
-    const newUser = { email, password };
-    users.push(newUser);
-
-    // Redirect to login after successful registration
-    res.redirect('/login');
-});
-
-router.get('/login', (req, res) => {
-    res.render('login');
-});
-
-router.post('/login', (req, res) => {
-    const { email, password } = req.body;
-
-    // User authentication logic
-    const user = users.find(user => user.email === email && user.password === password);
-
-    if (!user) {
-        return res.status(401).send('Invalid credentials');
-    }
-
-    // Create a session for the user
-    req.session.user = user;
-
-    // Redirect to dashboard after successful login
-    res.redirect('/dashboard');
 });
 
 module.exports = router;
