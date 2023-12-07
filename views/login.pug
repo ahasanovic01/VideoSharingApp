@@ -1,4 +1,13 @@
-form(method='POST', action='/login')
-    input(type='text', name='username', placeholder='Username', required)
-    input(type='password', name='password', placeholder='Password', required)
-    input(type='submit', value='Login')
+extends layout
+
+block content
+    h1 Login
+    form(method='POST', action='/login')
+        div
+            label(for='email') Email:
+            input(type='email', name='email', required=true)
+        div
+            label(for='password') Password:
+            input(type='password', name='password', required=true)
+        div
+            input(type='submit', value='Login')
